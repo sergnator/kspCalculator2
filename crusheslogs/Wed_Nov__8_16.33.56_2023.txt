@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "C:\Users\1425.471SPB\PycharmProjects\kspcalculator\main.py", line 217, in paintEvent
+    self.draw(qp)
+  File "C:\Users\1425.471SPB\PycharmProjects\kspcalculator\main.py", line 265, in draw
+    qp.setBrush(QColor(planets[j - 1].color, 255))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: arguments did not match any overloaded call:
+  QColor(color: Qt.GlobalColor): argument 1 has unexpected type 'str'
+  QColor(rgb: int): argument 1 has unexpected type 'str'
+  QColor(rgba64: QRgba64): argument 1 has unexpected type 'str'
+  QColor(variant: Any): too many arguments
+  QColor(): too many arguments
+  QColor(r: int, g: int, b: int, alpha: int = 255): argument 1 has unexpected type 'str'
+  QColor(aname: Optional[str]): too many arguments
+  QColor(acolor: Union[QColor, Qt.GlobalColor]): argument 1 has unexpected type 'str'

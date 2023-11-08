@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\1425.471SPB\PycharmProjects\kspcalculator\main.py", line 295, in <module>
+    print(float('1,1'))
+          ^^^^^^^^^^^^
+ValueError: could not convert string to float: '1,1'

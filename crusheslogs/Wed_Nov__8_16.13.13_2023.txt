@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\1425.471SPB\PycharmProjects\kspcalculator\main.py", line 192, in save_func
+    self.param = tuple(*param)
+                 ^^^^^^^^^^^^^
+TypeError: tuple expected at most 1 argument, got 6

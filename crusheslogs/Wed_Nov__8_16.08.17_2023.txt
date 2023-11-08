@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "C:\Users\1425.471SPB\PycharmProjects\kspcalculator\main.py", line 183, in save_func
+    if not i.isdigit() and i[0] != '-':
+           ^^^^^^^^^
+AttributeError: 'bool' object has no attribute 'isdigit'
