@@ -1,21 +1,21 @@
 # pip install -r requirements.txt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QColorDialog, QLabel, QPushButton
-from PyQt5.QtGui import QPixmap, QIcon, QPainter, QColor, QPen, QFont
-from PyQt5.QtCore import Qt, QPoint
-import qdarktheme
-
+import math
 import sys
 import traceback
 from random import randint
-import math
 
+import qdarktheme
+from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QPixmap, QIcon, QPainter, QColor, QPen, QFont
+from PyQt5.QtWidgets import QApplication, QMainWindow, QDialog, QColorDialog, QLabel, QPushButton
+
+import WriteAndReadFilesFunctions
+import kspPlanetsTransphere
+from Constans import *
+from MainClasses import *
 from interface import Ui_MainWindow
 from interface2 import Ui_MainWindow_Error
 from interface3 import Ui_Form
-import kspPlanetsTransphere
-from Constans import *
-import WriteAndReadFilesFunctions
-from MainClasses import *
 
 
 class CalculatorKsp(QMainWindow, Ui_MainWindow):
@@ -105,8 +105,11 @@ class CalculatorKsp(QMainWindow, Ui_MainWindow):
         res = dialog.exec_()
         if res != BAD_RESULT:
             res = dialog.param
+            res = list(res)
+            res.append(0)
+            res = tuple(res)
             WriteAndReadFilesFunctions.add_obj_in_database(DATABASE + 'planets.db', res, (
-                'name', 'g', 'atmosphere', 'secondSpaceSpeed', 'color', 'alt'))
+                'name', 'atmosphere', 'color', 'alt', 'secondSpaceSpeed', 'g', 'parent'))
 
     # изменение темы
     def theme_change(self):
@@ -124,6 +127,7 @@ class CalculatorKsp(QMainWindow, Ui_MainWindow):
 
 
 # окна ошибки
+# критическая необработанная
 class ErrorCriticalDialog(QDialog, Ui_MainWindow_Error):
     def __init__(self, window=None):
         super().__init__(window)
@@ -133,6 +137,7 @@ class ErrorCriticalDialog(QDialog, Ui_MainWindow_Error):
         self.setModal(True)
 
 
+# обработанная
 class ErrorMessage(QDialog):
     def __init__(self, message, window=None):
         super().__init__(window)
@@ -147,7 +152,7 @@ class ErrorMessage(QDialog):
         font.setPointSize(12)
         self.label.setFont(font)
         self.label.setText(self.message)
-        self.label.setScaledContents(True)
+        self.label.move(0, 0)
         self.label.move(150, 50)
         self.but = QPushButton(self)
         self.but.setText('ok')
@@ -168,18 +173,29 @@ class DialogAddPlanet(QDialog, Ui_Form):
         self.Icon.setPixmap(QPixmap(IMAGES + 'KspIcon.png'))
 
     def save_func(self):
-        param = (self.name.text(), self.acceleration.text(), self.atmoph.isChecked(), self.second_space_speed.text(),
-                 self.color, self.alt.text())
+        param = [self.name.text(), self.color,  self.atmoph.isChecked()]
+        integers = [self.acceleration.text(), self.second_space_speed.text(), self.alt.text()]
         for i in param:
             valid(i)
-        self.param = param
+        integers = list(map(lambda x: x.replace(',', '.'), integers))
+        for i in integers:
+
+            try:
+                i = float(i)
+            except ValueError:
+                raise IncorrectInput('нужно указать число')
+            if i <= 0:
+                raise NegativeValue('число не может быть меньше нуля или быть нулём')
+
+        self.param = tuple(param + integers)
         self.accept()
 
     def choice_color(self):
         color = QColorDialog.getColor()
         if color.isValid():
             self.color_button.setStyleSheet(f'background-color: {color.value()}')
-            self.color = color.rgb()
+            color.toRgb()
+            self.color = color.name()
 
 
 # окно карты планет
@@ -270,13 +286,10 @@ def except_hook(exc_type, exc_value, exc_tb):
 sys.excepthook = except_hook
 
 
+# функция для проверки правильности данных
 def valid(str_: str):
     if str_ is None or str_ == '':
         raise NoAnyoneSelect('нужно заполнить все поля')
-    if isinstance(str_, str):
-        if str_.isdigit():
-            if int(str_) < 0:
-                raise NegativeValue("число в поле не может быть отрицательным")
 
 
 if __name__ == '__main__':

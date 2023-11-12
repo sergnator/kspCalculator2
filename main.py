@@ -109,7 +109,7 @@ class CalculatorKsp(QMainWindow, Ui_MainWindow):
             res.append(0)
             res = tuple(res)
             WriteAndReadFilesFunctions.add_obj_in_database(DATABASE + 'planets.db', res, (
-                'name', 'atmosphere', 'color', 'alt', 'secondSpaceSpeed', 'g'))
+                'name', 'atmosphere', 'color', 'alt', 'secondSpaceSpeed', 'g', 'parent'))
 
     # изменение темы
     def theme_change(self):

@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "C:\Users\411va\OneDrive\Рабочий стол\kspCalculator-main\main.py", line 111, in add_planet
+    WriteAndReadFilesFunctions.add_obj_in_database(DATABASE + 'planets.db', res, (
+  File "C:\Users\411va\OneDrive\Рабочий стол\kspCalculator-main\WriteAndReadFilesFunctions.py", line 53, in add_obj_in_database
+    cur.execute(req)
+sqlite3.OperationalError: 7 values for 6 columns
